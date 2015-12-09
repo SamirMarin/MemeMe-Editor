@@ -26,28 +26,55 @@
                                 <rect key="frame" x="20" y="548" width="560" height="44"/>
                                 <animations/>
                                 <items>
-                                    <barButtonItem title="pickPhoto" id="d1I-o8-6iZ">
+                                    <barButtonItem title="Album" id="d1I-o8-6iZ">
                                         <connections>
                                             <action selector="selectImage:" destination="BYZ-38-t0r" id="RjX-cl-ax5"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem width="146" style="plain" systemItem="fixedSpace" id="Fcm-d7-hDF"/>
+                                    <barButtonItem title="Camara" id="bLs-bB-N7d">
+                                        <connections>
+                                            <action selector="takePhoto:" destination="BYZ-38-t0r" id="odY-tk-sii"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="TOP" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n4x-vH-Cli">
+                                <rect key="frame" x="98" y="33" width="404" height="30"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="BOTTOM" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hii-v0-VBf">
+                                <rect key="frame" x="98" y="505" width="404" height="30"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="eEN-dc-S7h" firstAttribute="top" secondItem="4v3-rq-lpm" secondAttribute="bottom" constant="58" id="4XK-z1-TM6"/>
                             <constraint firstAttribute="trailingMargin" secondItem="eEN-dc-S7h" secondAttribute="trailing" id="65y-Sf-Ech"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hii-v0-VBf" secondAttribute="trailing" constant="78" id="74v-Fa-3fH"/>
                             <constraint firstItem="4v3-rq-lpm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="58" id="IsA-Kd-w5m"/>
                             <constraint firstItem="eEN-dc-S7h" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Iwa-3M-iOt"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="4v3-rq-lpm" secondAttribute="bottom" constant="110" id="LPl-it-68w"/>
+                            <constraint firstItem="n4x-vH-Cli" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="78" id="RNk-rl-c7C"/>
+                            <constraint firstItem="hii-v0-VBf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="78" id="Zde-w8-h1b"/>
+                            <constraint firstItem="hii-v0-VBf" firstAttribute="top" secondItem="4v3-rq-lpm" secondAttribute="bottom" constant="15" id="dPG-Ii-v5p"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4v3-rq-lpm" secondAttribute="trailing" constant="78" id="elf-dG-cxo"/>
                             <constraint firstItem="4v3-rq-lpm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="78" id="kgB-cQ-oN1"/>
+                            <constraint firstItem="4v3-rq-lpm" firstAttribute="top" secondItem="n4x-vH-Cli" secondAttribute="bottom" constant="15" id="maP-Zd-dp6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="n4x-vH-Cli" secondAttribute="trailing" constant="78" id="tvS-Nk-xJk"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomTextField" destination="hii-v0-VBf" id="LXs-Dx-GvG"/>
+                        <outlet property="cameraButton" destination="bLs-bB-N7d" id="aJJ-bE-Ez8"/>
                         <outlet property="imageView" destination="4v3-rq-lpm" id="oqI-Tr-n5e"/>
+                        <outlet property="topTextField" destination="n4x-vH-Cli" id="SLJ-VP-h0Q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
