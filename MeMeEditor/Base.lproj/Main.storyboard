@@ -39,17 +39,23 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="TOP" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n4x-vH-Cli">
-                                <rect key="frame" x="98" y="33" width="404" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n4x-vH-Cli">
+                                <rect key="frame" x="70" y="23" width="460" height="50"/>
                                 <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Xhs-XX-ICI"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="BOTTOM" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hii-v0-VBf">
-                                <rect key="frame" x="98" y="505" width="404" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hii-v0-VBf">
+                                <rect key="frame" x="70" y="495" width="460" height="50"/>
                                 <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="fUy-og-kJf"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                         </subviews>
                         <animations/>
@@ -57,17 +63,17 @@
                         <constraints>
                             <constraint firstItem="eEN-dc-S7h" firstAttribute="top" secondItem="4v3-rq-lpm" secondAttribute="bottom" constant="58" id="4XK-z1-TM6"/>
                             <constraint firstAttribute="trailingMargin" secondItem="eEN-dc-S7h" secondAttribute="trailing" id="65y-Sf-Ech"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="hii-v0-VBf" secondAttribute="trailing" constant="78" id="74v-Fa-3fH"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hii-v0-VBf" secondAttribute="trailing" constant="50" id="74v-Fa-3fH"/>
                             <constraint firstItem="4v3-rq-lpm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="58" id="IsA-Kd-w5m"/>
                             <constraint firstItem="eEN-dc-S7h" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Iwa-3M-iOt"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="4v3-rq-lpm" secondAttribute="bottom" constant="110" id="LPl-it-68w"/>
-                            <constraint firstItem="n4x-vH-Cli" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="78" id="RNk-rl-c7C"/>
-                            <constraint firstItem="hii-v0-VBf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="78" id="Zde-w8-h1b"/>
-                            <constraint firstItem="hii-v0-VBf" firstAttribute="top" secondItem="4v3-rq-lpm" secondAttribute="bottom" constant="15" id="dPG-Ii-v5p"/>
+                            <constraint firstItem="n4x-vH-Cli" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="50" id="RNk-rl-c7C"/>
+                            <constraint firstItem="hii-v0-VBf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="50" id="Zde-w8-h1b"/>
+                            <constraint firstItem="hii-v0-VBf" firstAttribute="top" secondItem="4v3-rq-lpm" secondAttribute="bottom" constant="5" id="dPG-Ii-v5p"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4v3-rq-lpm" secondAttribute="trailing" constant="78" id="elf-dG-cxo"/>
                             <constraint firstItem="4v3-rq-lpm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="78" id="kgB-cQ-oN1"/>
-                            <constraint firstItem="4v3-rq-lpm" firstAttribute="top" secondItem="n4x-vH-Cli" secondAttribute="bottom" constant="15" id="maP-Zd-dp6"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="n4x-vH-Cli" secondAttribute="trailing" constant="78" id="tvS-Nk-xJk"/>
+                            <constraint firstItem="4v3-rq-lpm" firstAttribute="top" secondItem="n4x-vH-Cli" secondAttribute="bottom" constant="5" id="maP-Zd-dp6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="n4x-vH-Cli" secondAttribute="trailing" constant="50" id="tvS-Nk-xJk"/>
                         </constraints>
                     </view>
                     <connections>
