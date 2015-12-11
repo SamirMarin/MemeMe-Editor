@@ -84,6 +84,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func keyBoardWillShow(notification: NSNotification){
         view.frame.origin.y -= heightOfKeyBoard(notification)
     }
+    func keyBoardWillHide(notification: NSNotification){
+        view.frame.origin.y += heightOfKeyBoard(notification)
+    }
     func heightOfKeyBoard(notification: NSNotification)->CGFloat{
         let userInfo = notification.userInfo
         let keyBoardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
@@ -92,10 +95,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func subscribeToKeyBoardNotifications(){
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyBoardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyBoardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
     func unSubscribeToKeyBoardNotifications(){
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
+    
 
 }
 
