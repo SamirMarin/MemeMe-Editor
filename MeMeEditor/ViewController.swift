@@ -14,6 +14,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
     
+    
+    
     //Text attributes dictinary:
     let memeTextAttributes = [
         NSStrokeColorAttributeName: UIColor.blackColor(),
@@ -22,6 +24,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSStrokeWidthAttributeName: NSNumber(float: 3)]
     
     let memeTextEditDelegate = MemeTextEditDelegate()
+    
+    //position of keyboard constants
+    var positionAtOrgin: CGFloat?
+    var positionAtKeyBoardHeight: CGFloat?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +53,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        positionAtOrgin = view.frame.origin.y
         subscribeToKeyBoardNotifications()
         
     }
@@ -82,10 +89,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func keyBoardWillShow(notification: NSNotification){
-        view.frame.origin.y -= heightOfKeyBoard(notification)
+        if let position = positionAtOrgin{
+            if(position == view.frame.origin.y){
+                view.frame.origin.y -= heightOfKeyBoard(notification)
+                if positionAtKeyBoardHeight == nil{
+                    positionAtKeyBoardHeight = view.frame.origin.y
+                }
+            }
+        }
     }
     func keyBoardWillHide(notification: NSNotification){
-        view.frame.origin.y += heightOfKeyBoard(notification)
+        if let position = positionAtKeyBoardHeight{
+            if (position == view.frame.origin.y){
+                view.frame.origin.y += heightOfKeyBoard(notification)
+            }
+        }
     }
     func heightOfKeyBoard(notification: NSNotification)->CGFloat{
         let userInfo = notification.userInfo
@@ -103,6 +121,43 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
+    
+    func createMemeImage() -> UIImage{
+        //hide tool bar to make UIImage -- from : https://www.veasoftware.com/tutorials/2015/1/12/show-and-hide-bottom-toolbar-in-swift-xcode-6-ios-8-tutorial
+        
+        self.navigationController?.setToolbarHidden(true, animated: false)
+        
+        //render the view to an image
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        self.view.drawViewHierarchyInRect(self.view.frame, afterScreenUpdates: true)
+        let memeImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        self.navigationController?.setToolbarHidden(false, animated: false)
+        
+        return memeImage
+    }
+    
+    @IBAction func shareImage(sender: UIBarButtonItem) {
+        let memeImage = createMemeImage()
+        let activityViewController = UIActivityViewController(activityItems: [memeImage], applicationActivities: nil)
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+        activityViewController.completionWithItemsHandler = {(activity, success, items, error) in
+            if(success){
+                self.save()
+                activityViewController.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+                
+        
+        
+        
+    }
+    func save(){
+       _ = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, image: imageView.image!, memeImage: createMemeImage())
+        
+    }
+    
     
 
 }

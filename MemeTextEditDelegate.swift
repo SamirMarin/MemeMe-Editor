@@ -31,6 +31,7 @@ class MemeTextEditDelegate: NSObject, UITextFieldDelegate{
                 isItDefaultTextBottom = false
             }
         }
+        
     }
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {

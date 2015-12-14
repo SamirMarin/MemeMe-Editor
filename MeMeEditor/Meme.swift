@@ -13,10 +13,10 @@ class Meme{
     
     let topText:String!
     let bottomText:String!
-    let image: UIImageView!
+    let image: UIImage!
     let memeImage: UIImage!
     
-    init(topText: String, bottomText: String, image: UIImageView, memeImage: UIImage){
+    init(topText: String, bottomText: String, image: UIImage, memeImage: UIImage){
         self.topText = topText
         self.bottomText = bottomText
         self.image = image
