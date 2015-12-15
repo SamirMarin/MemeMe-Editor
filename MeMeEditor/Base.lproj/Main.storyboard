@@ -38,10 +38,12 @@
                                         </connections>
                                     </barButtonItem>
                                 </items>
+                                <color key="barTintColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
                             </toolbar>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n4x-vH-Cli">
                                 <rect key="frame" x="70" y="78" width="460" height="50"/>
                                 <animations/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Xhs-XX-ICI"/>
                                 </constraints>
@@ -51,6 +53,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hii-v0-VBf">
                                 <rect key="frame" x="70" y="498" width="460" height="50"/>
                                 <animations/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="fUy-og-kJf"/>
                                 </constraints>
@@ -67,6 +70,7 @@
                                         </connections>
                                     </barButtonItem>
                                 </items>
+                                <color key="barTintColor" white="1" alpha="0.50366379310344822" colorSpace="calibratedWhite"/>
                             </toolbar>
                         </subviews>
                         <animations/>
@@ -94,6 +98,7 @@
                         <outlet property="bottomTextField" destination="hii-v0-VBf" id="LXs-Dx-GvG"/>
                         <outlet property="cameraButton" destination="bLs-bB-N7d" id="aJJ-bE-Ez8"/>
                         <outlet property="imageView" destination="4v3-rq-lpm" id="oqI-Tr-n5e"/>
+                        <outlet property="shareButton" destination="JBm-LY-hhe" id="1WD-QM-0uv"/>
                         <outlet property="topTextField" destination="n4x-vH-Cli" id="SLJ-VP-h0Q"/>
                     </connections>
                 </viewController>

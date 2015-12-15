@@ -13,6 +13,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
     
     
     
@@ -21,7 +22,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSStrokeColorAttributeName: UIColor.blackColor(),
         NSForegroundColorAttributeName: UIColor.whiteColor(),
         NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSStrokeWidthAttributeName: NSNumber(float: 3)]
+        NSStrokeWidthAttributeName: NSNumber(float: 8)]
     
     let memeTextEditDelegate = MemeTextEditDelegate()
     
@@ -50,6 +51,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         //center the text
         topTextField.textAlignment = NSTextAlignment.Center
         bottomTextField.textAlignment = NSTextAlignment.Center
+        
+        //disable share button
+        shareButton.enabled = false
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -63,16 +67,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
     }
     @IBAction func selectImage(sender: UIBarButtonItem) {
-        let pickImageController = UIImagePickerController()
-        pickImageController.delegate = self
-        pickImageController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-        self.presentViewController(pickImageController, animated: true, completion: nil)
+        pickAnImage(UIImagePickerControllerSourceType.PhotoLibrary)
+
     }
     
     @IBAction func takePhoto(sender: UIBarButtonItem) {
+        pickAnImage(UIImagePickerControllerSourceType.Camera)
+        
+    }
+    private func pickAnImage(sourceType: UIImagePickerControllerSourceType){
         let pickImageController = UIImagePickerController()
         pickImageController.delegate = self
-        pickImageController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        pickImageController.sourceType = sourceType
         self.presentViewController(pickImageController, animated: true, completion: nil)
         
     }
@@ -82,7 +88,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             imageView.image = image
         }
         imageView.contentMode = UIViewContentMode.ScaleAspectFill
-        
+        shareButton.enabled = true
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -112,14 +118,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func subscribeToKeyBoardNotifications(){
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyBoardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        addingObserver("keyBoardWillShow:", name: UIKeyboardWillShowNotification)
+        addingObserver("keyBoardWillHide:", name: UIKeyboardWillHideNotification)
+    }
+    private func addingObserver(selectorFunc: Selector, name: String?){
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: selectorFunc, name: name, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyBoardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
     func unSubscribeToKeyBoardNotifications(){
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
-        
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        removingObserver(UIKeyboardWillShowNotification)
+        removingObserver(UIKeyboardWillHideNotification)
+    }
+    private func removingObserver(name: String?){
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: name, object: nil)
     }
     
     func createMemeImage() -> UIImage{
@@ -144,14 +155,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.presentViewController(activityViewController, animated: true, completion: nil)
         activityViewController.completionWithItemsHandler = {(activity, success, items, error) in
             if(success){
-                self.save()
+                _ = Meme(topText: self.topTextField.text!, bottomText: self.bottomTextField.text!, image: self.imageView.image!, memeImage: memeImage)
                 activityViewController.dismissViewControllerAnimated(true, completion: nil)
             }
         }
-                
-        
-        
-        
     }
     func save(){
        _ = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, image: imageView.image!, memeImage: createMemeImage())
