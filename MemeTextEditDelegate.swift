@@ -33,6 +33,13 @@ class MemeTextEditDelegate: NSObject, UITextFieldDelegate{
         }
         
     }
+    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+//    func textFieldDidEndEditing(textField: UITextField) {
+//        textField.resignFirstResponder()
+//    }
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()

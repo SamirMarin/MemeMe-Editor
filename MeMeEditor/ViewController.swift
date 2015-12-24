@@ -16,18 +16,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var shareButton: UIBarButtonItem!
     
     
+    @IBOutlet weak var topToolbar: UIToolbar!
+    @IBOutlet weak var bottomToolbar: UIToolbar!
     
     //Text attributes dictinary:
     let memeTextAttributes = [
         NSStrokeColorAttributeName: UIColor.blackColor(),
         NSForegroundColorAttributeName: UIColor.whiteColor(),
         NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSStrokeWidthAttributeName: NSNumber(float: 8)]
+        NSStrokeWidthAttributeName: NSNumber(float: -1)]
     
     let memeTextEditDelegate = MemeTextEditDelegate()
     
     //position of keyboard constants
-    var positionAtOrgin: CGFloat?
+    var positionAtOrgin: CGFloat? = 0
     var positionAtKeyBoardHeight: CGFloat?
     
     override func viewDidLoad() {
@@ -48,6 +50,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         topTextField.defaultTextAttributes = memeTextAttributes
         bottomTextField.defaultTextAttributes = memeTextAttributes
         
+        //set text field backGroundColor
+        topTextField.backgroundColor = UIColor.clearColor()
+        bottomTextField.backgroundColor = UIColor.clearColor()
+        topTextField.borderStyle = UITextBorderStyle.RoundedRect
+        bottomTextField.borderStyle = UITextBorderStyle.RoundedRect
+        
+        
         //center the text
         topTextField.textAlignment = NSTextAlignment.Center
         bottomTextField.textAlignment = NSTextAlignment.Center
@@ -57,7 +66,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        positionAtOrgin = view.frame.origin.y
         subscribeToKeyBoardNotifications()
         
     }
@@ -65,6 +73,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewWillDisappear(animated)
         unSubscribeToKeyBoardNotifications()
         
+    }
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        if(positionAtKeyBoardHeight != nil){
+          // positionAtKeyBoardHeight = nil
+        }
     }
     @IBAction func selectImage(sender: UIBarButtonItem) {
         pickAnImage(UIImagePickerControllerSourceType.PhotoLibrary)
@@ -95,19 +109,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func keyBoardWillShow(notification: NSNotification){
-        if let position = positionAtOrgin{
-            if(position == view.frame.origin.y){
+        if let positionOrgin = positionAtOrgin{
+            if(positionOrgin == view.frame.origin.y){
                 view.frame.origin.y -= heightOfKeyBoard(notification)
-                if positionAtKeyBoardHeight == nil{
-                    positionAtKeyBoardHeight = view.frame.origin.y
                 }
+            }else{
+                view.frame.origin.y = 0
+                view.frame.origin.y -= heightOfKeyBoard(notification)
             }
+        if positionAtKeyBoardHeight == nil{
+            positionAtKeyBoardHeight = view.frame.origin.y
         }
     }
     func keyBoardWillHide(notification: NSNotification){
-        if let position = positionAtKeyBoardHeight{
-            if (position == view.frame.origin.y){
+        if let positionAtHeight = positionAtKeyBoardHeight{
+            if(positionAtHeight == view.frame.origin.y){
                 view.frame.origin.y += heightOfKeyBoard(notification)
+                positionAtKeyBoardHeight = nil
             }
         }
     }
@@ -137,6 +155,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         //hide tool bar to make UIImage -- from : https://www.veasoftware.com/tutorials/2015/1/12/show-and-hide-bottom-toolbar-in-swift-xcode-6-ios-8-tutorial
         
         self.navigationController?.setToolbarHidden(true, animated: false)
+        topToolbar.hidden = true
+        bottomToolbar.hidden = true
         
         //render the view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -145,10 +165,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         UIGraphicsEndImageContext()
         
         self.navigationController?.setToolbarHidden(false, animated: false)
+        topToolbar.hidden = false
+        bottomToolbar.hidden = false
         
         return memeImage
     }
     
+    @IBAction func cancel(sender: UIBarButtonItem) {
+        viewDidLoad()
+        imageView.image = nil
+    }
     @IBAction func shareImage(sender: UIBarButtonItem) {
         let memeImage = createMemeImage()
         let activityViewController = UIActivityViewController(activityItems: [memeImage], applicationActivities: nil)
