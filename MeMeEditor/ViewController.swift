@@ -15,7 +15,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var shareButton: UIBarButtonItem!
     
-    
     @IBOutlet weak var topToolbar: UIToolbar!
     @IBOutlet weak var bottomToolbar: UIToolbar!
     
@@ -31,6 +30,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     //position of keyboard constants
     var positionAtOrgin: CGFloat? = 0
     var positionAtKeyBoardHeight: CGFloat?
+    
+    //The meme object
+    var meme: Meme?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +57,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         bottomTextField.backgroundColor = UIColor.clearColor()
         topTextField.borderStyle = UITextBorderStyle.RoundedRect
         bottomTextField.borderStyle = UITextBorderStyle.RoundedRect
-        
         
         //center the text
         topTextField.textAlignment = NSTextAlignment.Center
@@ -134,7 +135,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let keyBoardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
         return keyBoardSize.CGRectValue().height
     }
-    
     func subscribeToKeyBoardNotifications(){
         addingObserver("keyBoardWillShow:", name: UIKeyboardWillShowNotification)
         addingObserver("keyBoardWillHide:", name: UIKeyboardWillHideNotification)
@@ -150,7 +150,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     private func removingObserver(name: String?){
         NSNotificationCenter.defaultCenter().removeObserver(self, name: name, object: nil)
     }
-    
     func createMemeImage() -> UIImage{
         //hide tool bar to make UIImage -- from : https://www.veasoftware.com/tutorials/2015/1/12/show-and-hide-bottom-toolbar-in-swift-xcode-6-ios-8-tutorial
         
@@ -170,28 +169,26 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         return memeImage
     }
-    
     @IBAction func cancel(sender: UIBarButtonItem) {
         viewDidLoad()
         imageView.image = nil
     }
     @IBAction func shareImage(sender: UIBarButtonItem) {
+        topTextField.resignFirstResponder()
+        bottomTextField.resignFirstResponder()
         let memeImage = createMemeImage()
         let activityViewController = UIActivityViewController(activityItems: [memeImage], applicationActivities: nil)
         self.presentViewController(activityViewController, animated: true, completion: nil)
         activityViewController.completionWithItemsHandler = {(activity, success, items, error) in
             if(success){
-                _ = Meme(topText: self.topTextField.text!, bottomText: self.bottomTextField.text!, image: self.imageView.image!, memeImage: memeImage)
+                self.save(memeImage)
                 activityViewController.dismissViewControllerAnimated(true, completion: nil)
             }
         }
     }
-    func save(){
-       _ = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, image: imageView.image!, memeImage: createMemeImage())
+    func save(memeImage: UIImage){
+       meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, image: imageView.image!, memeImage: memeImage)
         
     }
-    
-    
-
 }
 

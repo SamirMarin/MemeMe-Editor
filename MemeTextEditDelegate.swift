@@ -17,7 +17,6 @@ class MemeTextEditDelegate: NSObject, UITextFieldDelegate{
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         return true
     }
-    
     func textFieldDidBeginEditing(textField: UITextField) {
         if let isDefualt = isItDefaultTextTop{
             if(isDefualt && textField.text == "TOP"){
@@ -31,16 +30,11 @@ class MemeTextEditDelegate: NSObject, UITextFieldDelegate{
                 isItDefaultTextBottom = false
             }
         }
-        
     }
     func textFieldShouldEndEditing(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-//    func textFieldDidEndEditing(textField: UITextField) {
-//        textField.resignFirstResponder()
-//    }
-
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

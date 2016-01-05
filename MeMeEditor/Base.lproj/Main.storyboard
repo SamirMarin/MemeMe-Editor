@@ -30,7 +30,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="eIb-Xh-Xca"/>
-                                    <barButtonItem title="Camara" id="bLs-bB-N7d">
+                                    <barButtonItem title="Camera" id="bLs-bB-N7d">
                                         <connections>
                                             <action selector="takePhoto:" destination="BYZ-38-t0r" id="odY-tk-sii"/>
                                         </connections>
