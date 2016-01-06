@@ -50,7 +50,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmF-ah-HS2">
                                 <rect key="frame" x="20" y="20" width="560" height="44"/>
                                 <items>
-                                    <barButtonItem title="Share" id="JBm-LY-hhe">
+                                    <barButtonItem systemItem="action" id="JBm-LY-hhe">
                                         <connections>
                                             <action selector="shareImage:" destination="BYZ-38-t0r" id="zVU-c8-9Bj"/>
                                         </connections>

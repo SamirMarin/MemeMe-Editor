@@ -27,10 +27,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     let memeTextEditDelegate = MemeTextEditDelegate()
     
-    //position of keyboard constants
-    var positionAtOrgin: CGFloat? = 0
-    var positionAtKeyBoardHeight: CGFloat?
-    
     //The meme object
     var meme: Meme?
     
@@ -38,32 +34,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
         
-        topTextField.text = "TOP"
-        bottomTextField.text = "BOTTOM"
+        setTextField(topTextField, text: "TOP")
+        setTextField(bottomTextField, text: "BOTTOM")
         
-        //setting text field delegates
-        topTextField.delegate = memeTextEditDelegate
-        bottomTextField.delegate = memeTextEditDelegate
         //the current text is set by default
         memeTextEditDelegate.isItDefaultTextTop = true
         memeTextEditDelegate.isItDefaultTextBottom = true
         
-        //set text field attributes
-        topTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.defaultTextAttributes = memeTextAttributes
-        
-        //set text field backGroundColor
-        topTextField.backgroundColor = UIColor.clearColor()
-        bottomTextField.backgroundColor = UIColor.clearColor()
-        topTextField.borderStyle = UITextBorderStyle.RoundedRect
-        bottomTextField.borderStyle = UITextBorderStyle.RoundedRect
-        
-        //center the text
-        topTextField.textAlignment = NSTextAlignment.Center
-        bottomTextField.textAlignment = NSTextAlignment.Center
-        
         //disable share button
         shareButton.enabled = false
+    }
+    private func setTextField(textField: UITextField, text: String){
+        textField.text = text
+        textField.delegate = memeTextEditDelegate
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.backgroundColor = UIColor.clearColor()
+        textField.borderStyle = UITextBorderStyle.RoundedRect
+        textField.textAlignment = NSTextAlignment.Center
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -74,12 +61,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewWillDisappear(animated)
         unSubscribeToKeyBoardNotifications()
         
-    }
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-        if(positionAtKeyBoardHeight != nil){
-          // positionAtKeyBoardHeight = nil
-        }
     }
     @IBAction func selectImage(sender: UIBarButtonItem) {
         pickAnImage(UIImagePickerControllerSourceType.PhotoLibrary)
@@ -94,7 +75,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let pickImageController = UIImagePickerController()
         pickImageController.delegate = self
         pickImageController.sourceType = sourceType
-        self.presentViewController(pickImageController, animated: true, completion: nil)
+        presentViewController(pickImageController, animated: true, completion: nil)
         
     }
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
@@ -110,25 +91,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func keyBoardWillShow(notification: NSNotification){
-        if let positionOrgin = positionAtOrgin{
-            if(positionOrgin == view.frame.origin.y){
-                view.frame.origin.y -= heightOfKeyBoard(notification)
-                }
-            }else{
-                view.frame.origin.y = 0
-                view.frame.origin.y -= heightOfKeyBoard(notification)
-            }
-        if positionAtKeyBoardHeight == nil{
-            positionAtKeyBoardHeight = view.frame.origin.y
+        if(bottomTextField.isFirstResponder()){
+            view.frame.origin.y -= heightOfKeyBoard(notification)
         }
     }
     func keyBoardWillHide(notification: NSNotification){
-        if let positionAtHeight = positionAtKeyBoardHeight{
-            if(positionAtHeight == view.frame.origin.y){
-                view.frame.origin.y += heightOfKeyBoard(notification)
-                positionAtKeyBoardHeight = nil
-            }
-        }
+        view.frame.origin.y = 0
     }
     func heightOfKeyBoard(notification: NSNotification)->CGFloat{
         let userInfo = notification.userInfo
@@ -153,17 +121,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func createMemeImage() -> UIImage{
         //hide tool bar to make UIImage -- from : https://www.veasoftware.com/tutorials/2015/1/12/show-and-hide-bottom-toolbar-in-swift-xcode-6-ios-8-tutorial
         
-        self.navigationController?.setToolbarHidden(true, animated: false)
+        navigationController?.setToolbarHidden(true, animated: false)
         topToolbar.hidden = true
         bottomToolbar.hidden = true
         
         //render the view to an image
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        self.view.drawViewHierarchyInRect(self.view.frame, afterScreenUpdates: true)
+        UIGraphicsBeginImageContext(view.frame.size)
+        view.drawViewHierarchyInRect(view.frame, afterScreenUpdates: true)
         let memeImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        self.navigationController?.setToolbarHidden(false, animated: false)
+        navigationController?.setToolbarHidden(false, animated: false)
         topToolbar.hidden = false
         bottomToolbar.hidden = false
         
@@ -178,7 +146,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         bottomTextField.resignFirstResponder()
         let memeImage = createMemeImage()
         let activityViewController = UIActivityViewController(activityItems: [memeImage], applicationActivities: nil)
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+        presentViewController(activityViewController, animated: true, completion: nil)
         activityViewController.completionWithItemsHandler = {(activity, success, items, error) in
             if(success){
                 self.save(memeImage)
