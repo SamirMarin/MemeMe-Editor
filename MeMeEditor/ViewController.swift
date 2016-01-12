@@ -27,9 +27,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     let memeTextEditDelegate = MemeTextEditDelegate()
     
-    //The meme object
-    var meme: Meme?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
@@ -155,7 +152,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     func save(memeImage: UIImage){
-       meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, image: imageView.image!, memeImage: memeImage)
+       let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, image: imageView.image!, memeImage: memeImage)
+        
+        //adding meme to Memes array in appDelegate
+        let appDelegateOption = UIApplication.sharedApplication().delegate
+        let appDelegate = appDelegateOption as! AppDelegate
+        appDelegate.memes.append(meme)
+        
         
     }
 }
