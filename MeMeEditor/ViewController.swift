@@ -137,6 +137,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func cancel(sender: UIBarButtonItem) {
         viewDidLoad()
         imageView.image = nil
+        dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func shareImage(sender: UIBarButtonItem) {
         topTextField.resignFirstResponder()
@@ -158,6 +159,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let appDelegateOption = UIApplication.sharedApplication().delegate
         let appDelegate = appDelegateOption as! AppDelegate
         appDelegate.memes.append(meme)
+        //dissmissing viewController
+        dismissViewControllerAnimated(true, completion: {NSNotificationCenter.defaultCenter().postNotificationName("load", object: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName("cload", object: nil)})
         
         
     }

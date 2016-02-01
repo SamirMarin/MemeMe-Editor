@@ -5,90 +5,88 @@
 //  Created by Samir Marin on 2016-01-11.
 //  Copyright © 2016 Samir Marin. All rights reserved.
 //
-
+import Foundation
 import UIKit
 
-private let reuseIdentifier = "Cell"
-
 class MemeCollectionViewController: UICollectionViewController {
-
+    
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
+    
+    var memes: [Meme]!
+    var space: CGFloat = 3.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
+        setAppDelegate()
+        
+        let dimension = getDimension()
+        
+        flowLayout.minimumInteritemSpacing = space
+        flowLayout.minimumLineSpacing = space
+        flowLayout.itemSize = CGSizeMake(dimension, dimension)
+    }    
+    private func getDimension() ->  CGFloat{
+        if(UIApplication.sharedApplication().statusBarOrientation.isPortrait){
+            return (self.view.frame.size.width - 2*space)/3.0
+        }
+        else{
+            return (self.view.frame.size.height - 2*space)/3.0
+        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        subscribeToLoadNotification()
+        reloadCollection()
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    func loadCollection(notification: NSNotification){
+        reloadCollection()        
     }
-    */
+    private func reloadCollection(){
+        //TODO: change to update on last photo loaded..
+        collectionView?.reloadData()
 
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
     }
-
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillAppear(true)
+        unSubscribeToLoadNotification()
+    }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        setAppDelegate()
+    }
+    
+    private func subscribeToLoadNotification(){
+        //obtained from: http://stackoverflow.com/questions/25921623/how-to-reload-tableview-from-another-view-controller-in-swift
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadCollection:", name: "cload", object: nil)
+    }
+    private func unSubscribeToLoadNotification(){
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "cload", object: nil)
+    }
+    
+    private func setAppDelegate(){
+        let applicationDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
+        memes = applicationDelegate.memes
+    }
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 0
+        return memes.count
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
-    
-        // Configure the cell
-    
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MemeCellCollection", forIndexPath: indexPath) as! MemeCollectionViewCell
+        let meme = memes[indexPath.item]
+        cell.memeImage.image = meme.memeImage
         return cell
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
     
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let detailedController = self.storyboard!.instantiateViewControllerWithIdentifier("MemeDetailedViewController") as! MemeDetailedViewController
+        detailedController.meme = memes[indexPath.item]
+        self.navigationController!.pushViewController(detailedController, animated: true)
     }
-    */
-
+    
+    @IBAction func memeEdit(sender: UIBarButtonItem) {
+        let detailedController = self.storyboard!.instantiateViewControllerWithIdentifier("ViewController") as! ViewController
+        presentViewController(detailedController, animated: true, completion: nil)
+    }
 }

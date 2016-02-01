@@ -8,93 +8,73 @@
 
 import UIKit
 
+
 class MemeTableViewController: UITableViewController {
     
     
-    var memes: [Meme]{
-        return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
-    }
-
+    var memes: [Meme]!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        setAppDelegate()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        subscribeToLoadNotification()
+        reloadTable()
+        
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    func loadTable(notification: NSNotification){
+        reloadTable()
     }
-
+    private func reloadTable(){
+        //TODO: change to reaload only last image added
+        tableView.reloadData()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        unSubscribeToLoadNotification()
+    }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        setAppDelegate()
+    }
+    private func subscribeToLoadNotification(){
+        //obtained from: http://stackoverflow.com/questions/25921623/how-to-reload-tableview-from-another-view-controller-in-swift
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadTable:", name: "load", object: nil)
+    }
+    private func unSubscribeToLoadNotification(){
+        NSNotificationCenter.defaultCenter().removeObserver("load")
+    }
+    private func setAppDelegate(){
+        let applicationDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
+        memes = applicationDelegate.memes
+    }
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return memes.count
     }
-
-    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier("MemeCellTable")!
+        let meme = memes[indexPath.row]
 
         // Configure the cell...
-
+        cell.textLabel?.text = meme.topText + "..." + meme.bottomText
+        cell.imageView?.image = meme.image
+        cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFill
+        cell.detailTextLabel?.text = "Meme"
+        
         return cell
     }
-    */
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let detailedController = self.storyboard!.instantiateViewControllerWithIdentifier("MemeDetailedViewController") as! MemeDetailedViewController
+        detailedController.meme = memes[indexPath.row]
+        self.navigationController!.pushViewController(detailedController, animated: true)
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    
+    @IBAction func memeEditor(sender: UIBarButtonItem) {
+        let detailedController = self.storyboard!.instantiateViewControllerWithIdentifier("ViewController") as! ViewController
+        presentViewController(detailedController, animated: true, completion: nil)
+        
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
