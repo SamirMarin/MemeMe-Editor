@@ -18,6 +18,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var topToolbar: UIToolbar!
     @IBOutlet weak var bottomToolbar: UIToolbar!
     
+    var topTextStringEdit: String?
+    var bottomTextStringEdit: String?
+    var imageEdit: UIImage?
+    
     //Text attributes dictinary:
     let memeTextAttributes = [
         NSStrokeColorAttributeName: UIColor.blackColor(),
@@ -31,23 +35,40 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
         
-        setTextField(topTextField, text: "TOP")
-        setTextField(bottomTextField, text: "BOTTOM")
+        setTextField(topTextField, text: "TOP", edit: topTextStringEdit)
+        setTextField(bottomTextField, text: "BOTTOM", edit: bottomTextStringEdit)
+        
+        //disable share button
+        shareButton.enabled = false
+        
+        //optional image edit
+        setOptionalImage(imageEdit)
         
         //the current text is set by default
         memeTextEditDelegate.isItDefaultTextTop = true
         memeTextEditDelegate.isItDefaultTextBottom = true
         
-        //disable share button
-        shareButton.enabled = false
+        
     }
-    private func setTextField(textField: UITextField, text: String){
-        textField.text = text
+    private func setTextField(textField: UITextField, text: String, edit: String?){
+        if let textEdit = edit{
+            textField.text = textEdit
+        }
+        else{
+            textField.text = text
+        }
         textField.delegate = memeTextEditDelegate
         textField.defaultTextAttributes = memeTextAttributes
         textField.backgroundColor = UIColor.clearColor()
         textField.borderStyle = UITextBorderStyle.RoundedRect
         textField.textAlignment = NSTextAlignment.Center
+    }
+    private func setOptionalImage(image: UIImage?){
+        if let imageEdit = image{
+            imageView.image = imageEdit
+            imageView.contentMode = UIViewContentMode.ScaleAspectFill
+            shareButton.enabled = true
+        }
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -135,8 +156,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return memeImage
     }
     @IBAction func cancel(sender: UIBarButtonItem) {
-        viewDidLoad()
-        imageView.image = nil
         dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func shareImage(sender: UIBarButtonItem) {
@@ -160,10 +179,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let appDelegate = appDelegateOption as! AppDelegate
         appDelegate.memes.append(meme)
         //dissmissing viewController
-        dismissViewControllerAnimated(true, completion: {NSNotificationCenter.defaultCenter().postNotificationName("load", object: nil)
-        NSNotificationCenter.defaultCenter().postNotificationName("cload", object: nil)})
-        
-        
+        dismissViewControllerAnimated(true, completion: {self.postNotification("load")
+                                                        self.postNotification("cload")})
+    }
+    private func postNotification(aName: String){
+        NSNotificationCenter.defaultCenter().postNotificationName(aName, object: nil)
     }
 }
 

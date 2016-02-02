@@ -247,10 +247,11 @@
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="eEN-dc-S7h" secondAttribute="trailing" id="65y-Sf-Ech"/>
                             <constraint firstAttribute="trailingMargin" secondItem="hii-v0-VBf" secondAttribute="trailing" constant="50" id="74v-Fa-3fH"/>
-                            <constraint firstItem="eEN-dc-S7h" firstAttribute="top" secondItem="4v3-rq-lpm" secondAttribute="bottom" constant="10" id="9gu-vz-gnf"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hii-v0-VBf" secondAttribute="bottom" constant="62" id="ACZ-Sh-RiM"/>
+                            <constraint firstItem="eEN-dc-S7h" firstAttribute="top" secondItem="4v3-rq-lpm" secondAttribute="bottom" constant="10" id="AJ3-ST-Us8"/>
                             <constraint firstItem="eEN-dc-S7h" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Iwa-3M-iOt"/>
                             <constraint firstItem="n4x-vH-Cli" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="50" id="RNk-rl-c7C"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="4v3-rq-lpm" secondAttribute="bottom" constant="62" id="UYD-mP-Awd"/>
                             <constraint firstItem="4v3-rq-lpm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="WvY-Zv-ogj"/>
                             <constraint firstItem="hii-v0-VBf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="50" id="Zde-w8-h1b"/>
                             <constraint firstItem="kmF-ah-HS2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="a0a-3Q-hoc"/>
@@ -277,7 +278,7 @@
             </objects>
             <point key="canvasLocation" x="56" y="589"/>
         </scene>
-        <!--Meme Detailed View Controller-->
+        <!--Title-->
         <scene sceneID="CuA-Ed-q3V">
             <objects>
                 <viewController storyboardIdentifier="MemeDetailedViewController" id="Y2u-PE-Ml0" customClass="MemeDetailedViewController" customModule="MeMeEditor" customModuleProvider="target" sceneMemberID="viewController">
@@ -290,15 +291,27 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lcm-EP-xI4">
-                                <rect key="frame" x="180" y="236" width="240" height="128"/>
+                                <rect key="frame" x="0.0" y="52" width="600" height="495"/>
                             </imageView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dxu-E6-9Kc">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="73f-Kc-hPk"/>
+                                    <barButtonItem title="Edit" id="fK0-Jw-iDE">
+                                        <connections>
+                                            <action selector="editImage:" destination="Y2u-PE-Ml0" id="YW2-Rh-iDi"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="lcm-EP-xI4" firstAttribute="centerX" secondItem="vMd-sk-zey" secondAttribute="centerX" id="TZg-wk-7ma"/>
                             <constraint firstItem="lcm-EP-xI4" firstAttribute="centerY" secondItem="vMd-sk-zey" secondAttribute="centerY" id="m6K-Ns-vUo"/>
-                            <constraint firstItem="lcm-EP-xI4" firstAttribute="centerX" secondItem="vMd-sk-zey" secondAttribute="centerX" id="q1G-26-Aml"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Title" id="Os1-LE-Ckn"/>
                     <connections>
                         <outlet property="imageView" destination="lcm-EP-xI4" id="X6a-YH-aws"/>
                     </connections>

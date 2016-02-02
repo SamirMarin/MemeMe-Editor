@@ -27,7 +27,6 @@ class MemeTableViewController: UITableViewController {
         reloadTable()
     }
     private func reloadTable(){
-        //TODO: change to reaload only last image added
         tableView.reloadData()
     }
     override func viewWillDisappear(animated: Bool) {

@@ -42,7 +42,6 @@ class MemeCollectionViewController: UICollectionViewController {
         reloadCollection()        
     }
     private func reloadCollection(){
-        //TODO: change to update on last photo loaded..
         collectionView?.reloadData()
 
     }
