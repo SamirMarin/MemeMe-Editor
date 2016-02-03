@@ -73,12 +73,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         subscribeToKeyBoardNotifications()
-        
     }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         unSubscribeToKeyBoardNotifications()
-        
+    }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        imageView.contentMode = UIViewContentMode.ScaleAspectFill
     }
     @IBAction func selectImage(sender: UIBarButtonItem) {
         pickAnImage(UIImagePickerControllerSourceType.PhotoLibrary)

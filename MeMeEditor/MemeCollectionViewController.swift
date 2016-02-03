@@ -27,10 +27,10 @@ class MemeCollectionViewController: UICollectionViewController {
     }    
     private func getDimension() ->  CGFloat{
         if(UIApplication.sharedApplication().statusBarOrientation.isPortrait){
-            return (self.view.frame.size.width - 2*space)/3.0
+            return (view.frame.size.width - 2*space)/3.0
         }
         else{
-            return (self.view.frame.size.height - 2*space)/3.0
+            return (view.frame.size.height - 2*space)/3.0
         }
     }
     override func viewWillAppear(animated: Bool) {
@@ -79,13 +79,13 @@ class MemeCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let detailedController = self.storyboard!.instantiateViewControllerWithIdentifier("MemeDetailedViewController") as! MemeDetailedViewController
+        let detailedController = storyboard!.instantiateViewControllerWithIdentifier("MemeDetailedViewController") as! MemeDetailedViewController
         detailedController.meme = memes[indexPath.item]
-        self.navigationController!.pushViewController(detailedController, animated: true)
+        navigationController!.pushViewController(detailedController, animated: true)
     }
     
     @IBAction func memeEdit(sender: UIBarButtonItem) {
-        let detailedController = self.storyboard!.instantiateViewControllerWithIdentifier("ViewController") as! ViewController
+        let detailedController = storyboard!.instantiateViewControllerWithIdentifier("ViewController") as! ViewController
         presentViewController(detailedController, animated: true, completion: nil)
     }
 }
